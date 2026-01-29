@@ -1,0 +1,67 @@
+O método get_dummies() da biblioteca Pandas é utilizado para transformar variáveis categóricas em variáveis binárias.
+
+PARÂMETROS DO MÉTODO
+--------------------
+data:
+    Parâmetro obrigatório que representa o conjunto de dados e contém as variáveis categóricas a serem transformadas.
+
+prefix:
+    Parâmetro opcional utilizado para adicionar um prefixo às colunas binárias geradas.
+    Exemplo: prefix="cat" gera colunas como cat_1, cat_2, etc.
+
+prefix_sep:
+    Parâmetro opcional utilizado para definir o separador entre o prefixo e o nome original da coluna.
+    Valor padrão: "_".
+
+columns:
+    Parâmetro opcional utilizado para selecionar colunas específicas que serão transformadas.
+    Se não for especificado, todas as colunas categóricas serão transformadas.
+
+drop_first:
+    Parâmetro opcional utilizado para remover a primeira coluna binária gerada.
+    Usado para evitar multicolinearidade.
+
+dtype:
+    Parâmetro opcional utilizado para definir o tipo de dado das colunas binárias.
+    Valor padrão: uint8.
+
+
+EXEMPLO DE USO
+--------------
+import pandas as pd
+
+# Criando um DataFrame de exemplo
+df = pd.DataFrame({
+    'cor': ['vermelho', 'azul', 'verde', 'vermelho'],
+    'tamanho': ['pequeno', 'médio', 'grande', 'médio'],
+    'formato': ['quadrado', 'redondo', 'redondo', 'quadrado']
+})
+
+# Aplicando get_dummies
+df_dummies = pd.get_dummies(
+    df,
+    columns=['cor', 'tamanho'],
+    prefix=['cor', 'tam'],
+    prefix_sep='-',
+    drop_first=True
+)
+
+SAÍDA
+-----
+formato    cor-verde  cor-vermelho  tam-médio  tam-pequeno
+quadrado   0          1              0           1
+redondo    0          0              1           0
+redondo    1          0              0           0
+quadrado   0          1              1           0
+
+
+DESCRIÇÃO DO RESULTADO
+---------------------
+O parâmetro data recebe o DataFrame original.
+O parâmetro columns define quais colunas categóricas serão transformadas.
+O parâmetro prefix define os prefixos das novas colunas.
+O parâmetro prefix_sep define o separador entre prefixo e nome da categoria.
+O parâmetro drop_first remove a primeira categoria para evitar multicolinearidade.
+
+O resultado é um novo DataFrame contendo as colunas originais não categóricas
+e as novas colunas binárias geradas pelo método get_dummies().
